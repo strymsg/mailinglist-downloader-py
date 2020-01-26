@@ -1,7 +1,7 @@
 '''
 mailisting-donwloader
 copyright 2020 Rodrigo Garcia <rgarcia@laotra.red>
-AGPL liberated.
+GPLv3 liberated.
 '''
 import requests
 from bs4 import BeautifulSoup

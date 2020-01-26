@@ -1,3 +1,8 @@
+'''
+mailisting-donwloader
+copyright 2020 Rodrigo Garcia <rgarcia@laotra.red>
+GPLv3 liberated.
+'''
 # Download debian mailing list emails
 
 import utils

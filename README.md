@@ -27,3 +27,4 @@ python3 debian-mailisting.py
 
 Download files should be at `output directory`
 
+LICENSE: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
