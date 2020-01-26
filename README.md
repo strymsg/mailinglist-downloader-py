@@ -25,6 +25,6 @@ Execution
 python3 debian-mailisting.py
 ```
 
-Download files should be at `output directory`
+Download files should be at `output directory` (developing)
 
 LICENSE: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
