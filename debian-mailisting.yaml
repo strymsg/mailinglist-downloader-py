@@ -1,0 +1,18 @@
+# Debian mailisting configuration params
+index_url: https://lists.debian.org/completeindex.html
+
+# Crawl and download all sections
+download_all: False
+# If `download_all' is False then it only downloads emails from the following section
+section_download:
+  - cdwrite
+  - admin
+  - cli
+  - desktop
+  - devel
+  - gcc
+  - kernel
+  - legal
+  - mirrors
+  - news
+  - vote
