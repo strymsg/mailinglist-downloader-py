@@ -11,6 +11,12 @@ from  datetime import datetime as dt
 
 import re
 
+def readYaml(filepath):
+    ''' reads yaml file and returs dict'''
+    with open(filepath) as file:
+        dc = yaml.load(file, Loader=yaml.FullLoader)
+        return dc
+
 def getHtml(url):
     ''' get the html content'''
     result = requests.get(url)
@@ -19,13 +25,8 @@ def getHtml(url):
             return None
         return result.content
     except Exception as e:
+        print(e)
         return None
-
-def readYaml(filepath):
-    ''' reads yaml file and returs dict'''
-    with open(filepath) as file:
-        dc = yaml.load(file, Loader=yaml.FullLoader)
-        return dc
 
 def getUrls(htmlContent):
     ''' reads `htmlContent' and get all valid URLS '''
@@ -42,6 +43,39 @@ def getUrls(htmlContent):
 #     while n < endYear:
 #         n += 1
 #         yield n
+
+    
+def getUrlsFromSectionIndexDebian(url, name, debug=False, initialYear=2004, endYear=None):
+    ''' crawls the given `url' of the mailisting section and returns
+    a dict with all urls related to archives of the given `name'
+    { '2000' : [url1, ..., urln], '2001': [url1, ..., urln] }
+    '''
+    dict = {}
+    htmlContent = getHtml(url)
+    urls = getUrls(htmlContent)
+    # checking year by year
+    if endYear is None:
+        endYear = dt.now().year
+    for url in urls:
+        validIndexes = []
+        month = 0
+        for year in range(initialYear, endYear):
+            dict[year] = []
+            for month in range(1, 13):
+                if month < 10:
+                    month = '0'+str(month)
+                # to try an url that is like {year}/{name}-{year}{month}
+                # slug:
+                # 2009/debian-vote-200901/threads.html
+                # url:
+                # https://lists.debian.org/debian-cd/1998/debian-cd-199811/threads.html
+                # 'https://lists.debian.orgdebian-admin//2016/debian-admin/-201601/threads.html'
+                slug = str(year) + '/' + str(name) + '-' + str(year) + str(month)
+
+                indexUrl = 'https://lists.debian.org/' + name + '/' + slug + '/threads.html'
+                dict[year].append(indexUrl)
+    return dict                    
+
 
 def prefixMessageUrlDebian(threadUrl):
     ''' The debian server redirects like this:
@@ -103,10 +137,9 @@ def getUrlsMessagesFromThreadDebian(threadUrl):
         html = getHtml(pageUrl)
         if html is None:
             # can't find url that should mean there are no email messages
-            if debug:
-                print(indexUrl, 'Not found!')
-                return urls
-        
+            print(pageUrl, 'Not found!')
+            continue
+
         pageUrls = getUrls(html)
         # to get actual email message url it should have the form:
         # {prefix}msg{number}.html
@@ -114,44 +147,11 @@ def getUrlsMessagesFromThreadDebian(threadUrl):
         # number format is five digit zero formated, for instasnce: msg00005.html
         # regex to validate the url like: https://lists.debian.org/debian-cd/1999/01/msg00138.html
         regex = '^(' + prefix + ')(msg[0-9][0-9][0-9][0-9][0-9].html)$'
-        for url in pageUrls:
+        for page in pageUrls:
+            url = prefix + page
+            # print('trying:', url)
             if re.search(regex, url) is not None:
                 urls.append(url)
     return urls
-    
-def getUrlsFromSectionIndexDebian(url, name, debug=False, initialYear=2004, endYear=None):
-    ''' crawls the given `url' of the mailisting section and returns
-    a dict with all urls related to archives of the given `name'
-    { '2000' : [url1, ..., urln], '2001': [url1, ..., urln] }
-    '''
-    dict = {}
-    htmlContent = getHtml(url)
-    urls = getUrls(htmlContent)
-    # checking year by year
-    if endYear is None:
-        endYear = dt.now().year
-    for url in urls:
-        validIndexes = []
-        month = 0
-        for year in range(initialYear, endYear):
-            dict[year] = []
-            for month in range(1, 13):
-                if month < 10:
-                    month = '0'+str(month)
-                # to try an url that is like {year}/{name}-{year}{month}
-                # slug:
-                # 2009/debian-vote-200901/threads.html
-                # url:
-                # https://lists.debian.org/debian-cd/1998/debian-cd-199811/threads.html
-                # 'https://lists.debian.orgdebian-admin//2016/debian-admin/-201601/threads.html'
-                slug = str(year) + '/' + str(name) + '-' + str(year) + str(month)
-
-                indexUrl = 'https://lists.debian.org/' + name + '/' + slug + '/threads.html'
-                dict[year].append(indexUrl)
-    return dict                    
-
-                
-                    
-                
 
         

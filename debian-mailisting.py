@@ -34,16 +34,21 @@ mailistingNames = []
 #         else:
 #             mailistingNames.append(url)
 # print(mailistingNames)
-mailistingNames = ['debian-admin/', 'debian-cli/', 'debian-desktop/', 'debian-devel/', 'debian-gcc/', 'debian-kernel/', 'debian-legal/', 'debian-mirrors/', 'debian-news/', 'debian-vote/']
+mailistingNames = ['debian-cli/', 'debian-desktop/', 'debian-devel/', 'debian-gcc/', 'debian-kernel/', 'debian-legal/', 'debian-mirrors/', 'debian-news/', 'debian-vote/']
 
 allUrls = []
 for name in mailistingNames:
     print('Crawling','https://lists.debian.org/'+ name)
     indexes = utils.misc.getUrlsFromSectionIndexDebian('https://lists.debian.org/'+ name, name[:-1])
+    # print('****************')
     # print(indexes)
-    for index in indexes:
-        newUrls = utils.misc.getUrlsMessagesFromThreadDebian(index)
-        print('newUrls---')
-        print(newUrls)
-        print()
+    # print('****************---------')
+    for year, indexPage in indexes.items():
+        print('Year: ', year)
+        for page in indexPage:
+            print('"', page, '"')
+            newUrls = utils.misc.getUrlsMessagesFromThreadDebian(page)
+            print('newUrls---')
+            print(newUrls)
+            print()
         allUrls.append(newUrls)
