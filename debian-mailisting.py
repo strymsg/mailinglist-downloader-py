@@ -38,6 +38,7 @@ mailistingNames = ['debian-admin/', 'debian-cli/', 'debian-desktop/', 'debian-de
 
 for name in mailistingNames:
     print('Crawling','https://lists.debian.org/'+ name)
-    utils.misc.getUrlsSectionIndexDebian('https://lists.debian.org/'+ name)
+    indexes = utils.misc.getUrlsSectionIndexDebian('https://lists.debian.org/'+ name, name[:-1])
+    print(indexes)
 
     
