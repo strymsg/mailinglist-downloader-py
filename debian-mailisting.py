@@ -36,9 +36,14 @@ mailistingNames = []
 # print(mailistingNames)
 mailistingNames = ['debian-admin/', 'debian-cli/', 'debian-desktop/', 'debian-devel/', 'debian-gcc/', 'debian-kernel/', 'debian-legal/', 'debian-mirrors/', 'debian-news/', 'debian-vote/']
 
+allUrls = []
 for name in mailistingNames:
     print('Crawling','https://lists.debian.org/'+ name)
-    indexes = utils.misc.getUrlsSectionIndexDebian('https://lists.debian.org/'+ name, name[:-1])
-    print(indexes)
-
-    
+    indexes = utils.misc.getUrlsFromSectionIndexDebian('https://lists.debian.org/'+ name, name[:-1])
+    # print(indexes)
+    for index in indexes:
+        newUrls = utils.misc.getUrlsMessagesFromThreadDebian(index)
+        print('newUrls---')
+        print(newUrls)
+        print()
+        allUrls.append(newUrls)

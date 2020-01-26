@@ -6,7 +6,6 @@ download_all: False
 # If `download_all' is False then it only downloads emails from the following section
 section_download:
   - debian-cdwrite
-  - debian-admin
   - debian-cli
   - debian-desktop
   - debian-devel

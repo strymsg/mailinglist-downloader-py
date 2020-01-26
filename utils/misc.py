@@ -9,12 +9,17 @@ from bs4 import BeautifulSoup
 import yaml
 from  datetime import datetime as dt
 
+import re
+
 def getHtml(url):
     ''' get the html content'''
     result = requests.get(url)
-    if result.status_code != 200:
+    try:
+        if result.status_code != 200:
+            return None
+        return result.content
+    except Exception as e:
         return None
-    return result.content
 
 def readYaml(filepath):
     ''' reads yaml file and returs dict'''
@@ -38,7 +43,83 @@ def getUrls(htmlContent):
 #         n += 1
 #         yield n
 
-def getUrlsSectionIndexDebian(url, name, debug=False, initialYear=2004, endYear=None):
+def prefixMessageUrlDebian(threadUrl):
+    ''' The debian server redirects like this:
+    - Thread url: https://lists.debian.org/debian-devel/2004/debian-devel-200406/threads.html
+    - redirect:   https://lists.debian.org/debian-devel/2004/06/threads.html
+
+    This function mimics the redirect and returns the string
+    https://lists.debian.org/debian-devel/2004/06/
+    '''
+    # example: https://lists.debian.org/debian-devel/2004/debian-devel-200406/threads.html
+    p1 = threadUrl.split('/')[-2] # getting the debian-devel-200406 part
+    name = ''
+    for c in p1.split('-')[0:-1]:
+        name += c + '-'
+    name = name[0:-1] # getting rid of last '-'
+    
+    regex = '(?P<year>20[0-9][0-9])(?P<month>[0-9][0-9])'
+    m = re.search(regex, p1.split('-')[-1])
+    year = m.group('year')
+    month = m.group('month')
+
+    # example: https://lists.debian.org/debian-devel/2004/06/
+    prefix = 'https://lists.debian.org/' + name + '/' + year + '/' + month + '/'
+    return prefix
+
+def getUrlsMessagesFromThreadDebian(threadUrl):
+    ''' crawls the give `threadUrl' and returns a list of all urls found. 
+    It tries to open pagination thread indexes.
+    
+    - threadUrl (example): https://lists.debian.org/debian-devel/2004/debian-devel-200406/threads.html
+    '''
+    urls = []
+
+    '''
+    first trying to find exsiting index page indexes, starting the first
+    page "threads.html" and then "thrd2.html" to "thrd{n}.html" until it fails
+    '''
+    pageNotFound = False
+    page = 2
+    pageIndexes = []
+    pageIndexes.append(threadUrl)
+
+    # Debian server redirects Index page of the section to a url like https://lists.debian.org/{name}/{year}/{month}/threads.html and the same for next pages
+    prefix = prefixMessageUrlDebian(threadUrl)
+
+    while not pageNotFound:
+        threadIndexUrl = prefix + 'thrd' + str(page) + '.html'
+        try:
+            resp = requests.get(threadIndexUrl)
+            if resp.status_code != 200:
+                pageNotFound = True
+            else:
+                pageIndexes.append(threadIndexUrl)
+        except Exception as E:
+            pageNotFound = True
+
+    # now having all valid index pages, crawls on them and gets the message urls
+    for pageUrl in pageIndexes:
+        html = getHtml(pageUrl)
+        if html is None:
+            # can't find url that should mean there are no email messages
+            if debug:
+                print(indexUrl, 'Not found!')
+                return urls
+        
+        pageUrls = getUrls(html)
+        # to get actual email message url it should have the form:
+        # {prefix}msg{number}.html
+        # where prefix has the form: https://lists.debian.org/{name}/{year}/{month}/
+        # number format is five digit zero formated, for instasnce: msg00005.html
+        # regex to validate the url like: https://lists.debian.org/debian-cd/1999/01/msg00138.html
+        regex = '^(' + prefix + ')(msg[0-9][0-9][0-9][0-9][0-9].html)$'
+        for url in pageUrls:
+            if re.search(regex, url) is not None:
+                urls.append(url)
+    return urls
+    
+def getUrlsFromSectionIndexDebian(url, name, debug=False, initialYear=2004, endYear=None):
     ''' crawls the given `url' of the mailisting section and returns
     a dict with all urls related to archives of the given `name'
     { '2000' : [url1, ..., urln], '2001': [url1, ..., urln] }
@@ -67,15 +148,7 @@ def getUrlsSectionIndexDebian(url, name, debug=False, initialYear=2004, endYear=
 
                 indexUrl = 'https://lists.debian.org/' + name + '/' + slug + '/threads.html'
                 dict[year].append(indexUrl)
-    return dict
-                # html = getHtml(indexUrl)
-                # if html is None:
-                #     # can't find url that should mean there are no more emails
-                #     if debug:
-                #         print(indexUrl, 'Not found!')
-                #     break
-                
-                    
+    return dict                    
 
                 
                     
