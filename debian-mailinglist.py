@@ -55,9 +55,6 @@ except FileExistsError:
 allUrls = []
 writtenFiles = []
 
-# for testing
-# allUrls = ['https://lists.debian.org/debian-cli/2018/04/msg00000.html', 'https://lists.debian.org/debian-cli/2018/12/msg00000.html', 'https://lists.debian.org/debian-cli/2018/12/msg00001.html', 'https://lists.debian.org/debian-cli/2018/12/msg00002.html', 'https://lists.debian.org/debian-cli/2018/12/msg00003.html', 'https://lists.debian.org/debian-cli/2018/12/msg00004.html']
-
 print('*** Getting urls ***')
 for name in mailistingNames:
     print('Crawling','https://lists.debian.org/'+ name)
