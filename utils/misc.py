@@ -183,23 +183,41 @@ def getMessageText(url='', html=None):
     else:
         return None
 
-def crawlMessageAndWriteFromUrls(urls, directory):
+def crawlMessageAndWriteFromUrls(urls, directory, name=None, year=None):
     ''' loops on `urls' give, crawling and getting the message text of the
     containing html page. The email message got is written to a file in 
     `directory' given.
+    optionals:
+    -param year: to write the file on directory/name/year, or writes to directory/year if no `name' is given
+    -param name: to write the file on directory name/year,  or writes to directory/name if no `year' is given
     Returns filename of written files.
     '''
     written = []
+    pathToWrite = directory
+    if year is not None and name is None:
+        pathToWrite = os.path.join(directory, year)
+    if name is not None and year is None:
+        pathToWrite = os.path.join(directory, name)
+    if name is not None and year is not None:
+        pathToWrite = os.path.join(directory, name, year)
+    # checking directory    
+    try:
+        if not os.path.exists(pathToWrite):
+            os.makedirs(pathToWrite)
+            print('created directory:', directory)
+    except FileExistsError:
+        print('Directory:', pathToWrite, 'already exists.')
+
     for url in urls:
         slug1 = url.split('https://lists.debian.org/')[-1]
         fileName = slug1.replace('/', '_') + '.txt'
         fileContent = getMessageText(url)
         try:
-            file = open(os.path.join(directory, fileName), 'w')
+            file = open(os.path.join(pathToWrite, fileName), 'w')
             file.write(fileContent)
             file.close()
-            print('✓', os.path.join(directory, fileName), 'written')
-            written.append(os.path.join(directory, fileName))
+            print('✓', os.path.join(pathToWrite, fileName), 'written')
+            written.append(os.path.join(pathToWrite, fileName))
         except Exception as e:
             print('✖ file:', e)
     return written

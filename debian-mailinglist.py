@@ -48,9 +48,9 @@ try:
         os.makedirs(directory)
         print('created directory:', directory)
     else:
-        print('Direcotry:', directory, 'already exists.')
+        print('Directory:', directory, 'already exists.')
 except FileExistsError:
-    print('Direcotry:', directory, 'already exists.')
+    print('Directory:', directory, 'already exists.')
 
 allUrls = []
 writtenFiles = []
@@ -73,7 +73,10 @@ for name in mailistingNames:
             newUrls = utils.misc.getUrlsMessagesFromThreadDebian(page)
             print('crawling', str(len(newUrls)) + ' url(s)')
             allUrls += newUrls
-            written = utils.misc.crawlMessageAndWriteFromUrls(newUrls, directory)
+            written = utils.misc.crawlMessageAndWriteFromUrls(urls=newUrls,
+                                                              directory=directory,
+                                                              year=str(year),
+                                                              name=str(name[:-1]))
             writtenFiles += written
 
 print('**********************************')                
