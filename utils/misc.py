@@ -154,4 +154,16 @@ def getUrlsMessagesFromThreadDebian(threadUrl):
                 urls.append(url)
     return urls
 
-        
+def getMessageText(url='', html=None):
+    '''crawls the url or the html (if given) and get the message'''
+    htmlContent = ''
+    if html is not None:
+        htmlContent = html
+    else:
+        htmlContent = getHtml(url)
+    if htmlContent is not None:
+        soup = BeautifulSoup(htmlContent, features='html.parser')
+        p = soup.find_all('pre')
+        return p[0].contents[0]
+    else:
+        return None

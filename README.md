@@ -1,6 +1,6 @@
 # Mail listing downloader scripts
 
-Collection of scripts to download emails from a mailing list archive.
+Collection of scripts to download email messages from a mailing list archive.
 
 To exectue the scripts you must activate the python virtualenv.
 
