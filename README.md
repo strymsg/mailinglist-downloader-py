@@ -15,7 +15,7 @@ Then install dependencies
 pip install -r requirements.py
 ```
 
-## Debian mailist
+## Debian mailisting
 
 Check File: `debian-mailinglist.yaml` and modify if neccesary.
 
