@@ -164,6 +164,9 @@ def getMessageText(url='', html=None):
     if htmlContent is not None:
         soup = BeautifulSoup(htmlContent, features='html.parser')
         p = soup.find_all('pre')
-        return p[0].contents[0]
+        try:
+            return p[0].contents[0]
+        except:
+            return p[0].contents
     else:
         return None

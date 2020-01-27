@@ -50,19 +50,21 @@ for name in mailistingNames:
     indexes = utils.misc.getUrlsFromSectionIndexDebian('https://lists.debian.org/'+ name, name[:-1])
     # print('****************')
     # print(indexes)
-    # print('****************---------')
     for year, indexPage in indexes.items():
-        if year == 2019:
-            print('Year: ', year)
-            for page in indexPage:
-                print('"'+page+ '"')
-                newUrls = utils.misc.getUrlsMessagesFromThreadDebian(page)
-                print('urls:', len(newUrls))
-                print()
-                allUrls += newUrls
+        print('Year: ', year)
+        for page in indexPage:
+            print('"'+page+ '"')
+            newUrls = utils.misc.getUrlsMessagesFromThreadDebian(page)
+            print('urls:', len(newUrls))
+            print()
+            allUrls += newUrls
+# for testing
+# allUrls = ['https://lists.debian.org/debian-cli/2018/04/msg00000.html', 'https://lists.debian.org/debian-cli/2018/12/msg00000.html', 'https://lists.debian.org/debian-cli/2018/12/msg00001.html', 'https://lists.debian.org/debian-cli/2018/12/msg00002.html', 'https://lists.debian.org/debian-cli/2018/12/msg00003.html', 'https://lists.debian.org/debian-cli/2018/12/msg00004.html']
+                
 print('Total of:', str(len(allUrls)))
+print(allUrls)
 print('*********************')
-print('*** downloading ***')
+print('**** downloading ****')
 
 # creating directory to store files
 directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'output', 'debian-mailinglist')
