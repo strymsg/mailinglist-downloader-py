@@ -156,7 +156,7 @@ def getUrlsMessagesFromThreadDebian(threadUrl):
     return urls
 
 def getMessageText(url='', html=None):
-    '''crawls the url or the html (if given) and get the message'''
+    '''crawls the url or the html (if given) and gets the message'''
     htmlContent = ''
     if html is not None:
         htmlContent = html
@@ -168,8 +168,13 @@ def getMessageText(url='', html=None):
         try:
             return p[0].contents[0]
         except Exception as e:
-            # probably an empty message
-            # print('>>>', p)
+            pass
+            # This may be the case of an html formated email.
+
+        try:
+            b = str(htmlContent).split('<!--X-Body-of-Message-->')
+            return b[1].split('<!--X-Body-of-Message-End-->')[0]
+        except Exception as e:
             print('✖ url:', url)
             print(e)
             return ''
