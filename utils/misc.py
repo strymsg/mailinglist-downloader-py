@@ -124,6 +124,7 @@ def getUrlsMessagesFromThreadDebian(threadUrl):
 
     while not pageNotFound:
         threadIndexUrl = prefix + 'thrd' + str(page) + '.html'
+        # print('trying:', threadIndexUrl)
         try:
             resp = requests.get(threadIndexUrl)
             if resp.status_code != 200:
@@ -132,8 +133,8 @@ def getUrlsMessagesFromThreadDebian(threadUrl):
                 pageIndexes.append(threadIndexUrl)
         except Exception as E:
             pageNotFound = True
-
-    # now having all valid index pages, crawls on them and gets the message urls
+        page += 1
+    # once having all valid index pages, crawls on them and gets the message urls
     for pageUrl in pageIndexes:
         html = getHtml(pageUrl)
         if html is None:
@@ -165,6 +166,7 @@ def getMessageText(url='', html=None):
     if htmlContent is not None:
         soup = BeautifulSoup(htmlContent, features='html.parser')
         p = soup.find_all('pre')
+
         try:
             return p[0].contents[0]
         except Exception as e:
@@ -175,7 +177,7 @@ def getMessageText(url='', html=None):
             b = str(htmlContent).split('<!--X-Body-of-Message-->')
             return b[1].split('<!--X-Body-of-Message-End-->')[0]
         except Exception as e:
-            print('✖ url:', url)
+            print('✖ [',os.path.abspath(__file__),'] - url:', url)
             print(e)
             return ''
     else:
@@ -187,6 +189,7 @@ def crawlMessageAndWriteFromUrls(urls, directory):
     `directory' given.
     Returns filename of written files.
     '''
+    print('urls:::', urls)
     written = []
     for url in urls:
         slug1 = url.split('https://lists.debian.org/')[-1]
