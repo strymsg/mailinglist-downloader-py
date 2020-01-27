@@ -59,9 +59,14 @@ print('*** Getting urls ***')
 for name in mailistingNames:
     print('Crawling','https://lists.debian.org/'+ name)
     indexes = utils.misc.getUrlsFromSectionIndexDebian('https://lists.debian.org/'+ name, name[:-1])
+    years = configParams.get('years', None)
     # print('****************')
     # print(indexes)
     for year, indexPage in indexes.items():
+        if year is not None:
+            if year not in years:
+                print('year:', year, 'ignored')
+                continue
         print('Year: ', year)
         for page in indexPage:
             print('"'+page+ '"')

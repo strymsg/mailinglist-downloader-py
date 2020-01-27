@@ -5,23 +5,21 @@ index_url: https://lists.debian.org/completeindex.html
 download_all: False
 # If `download_all' is False then it only downloads emails from the following section
 section_download:
-  - debian-cdwrite
-  - debian-admin
-  - debian-cli
-  - debian-desktop
-  - debian-devel
-  - debian-gcc
-  - debian-kernel
+  # - debian-cdwrite
+  # - debian-cli
+  # - debian-desktop
+  # - debian-devel
+  # - debian-gcc
+  # - debian-kernel
   - debian-legal
-  - debian-mirrors
-  - debian-news
-  - debian-vote
+  # - debian-mirrors
+  # - debian-news
+  # - debian-vote
 
 # years to get, uncomment if want to get emails comming only from these years
 years:
   - 2018
   - 2019
-
+  
 # debug
 debug: True
-
