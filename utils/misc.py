@@ -189,7 +189,6 @@ def crawlMessageAndWriteFromUrls(urls, directory):
     `directory' given.
     Returns filename of written files.
     '''
-    print('urls:::', urls)
     written = []
     for url in urls:
         slug1 = url.split('https://lists.debian.org/')[-1]
