@@ -25,6 +25,6 @@ Execution
 python3 debian-malinglist.py
 ```
 
-Download files should be at `output directory` (developing)
+Download files should be at `output/` directory. 
 
-LICENSE: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
+> LICENSE: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)

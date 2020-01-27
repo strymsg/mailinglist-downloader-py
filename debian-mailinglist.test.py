@@ -39,6 +39,9 @@ for url in allUrls:
                 mailistingNames.append(url)
         else:
             mailistingNames.append(url)
+print(mailistingNames)
+#mailistingNames = ['debian-cli/', 'debian-desktop/', 'debian-devel/', 'debian-gcc/', 'debian-kernel/', 'debian-legal/', 'debian-mirrors/', 'debian-news/', 'debian-vote/']
+mailistingNames = ['debian-cli/']
 
 allUrls = []
 print('*** Getting urls ***')
