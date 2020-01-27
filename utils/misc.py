@@ -10,6 +10,7 @@ import yaml
 from  datetime import datetime as dt
 
 import re
+import os
 
 def readYaml(filepath):
     ''' reads yaml file and returs dict'''
@@ -166,7 +167,32 @@ def getMessageText(url='', html=None):
         p = soup.find_all('pre')
         try:
             return p[0].contents[0]
-        except:
-            return p[0].contents
+        except Exception as e:
+            # probably an empty message
+            # print('>>>', p)
+            print('✖ url:', url)
+            print(e)
+            return ''
     else:
         return None
+
+def crawlMessageAndWriteFromUrls(urls, directory):
+    ''' loops on `urls' give, crawling and getting the message text of the
+    containing html page. The email message got is written to a file in 
+    `directory' given.
+    Returns filename of written files.
+    '''
+    written = []
+    for url in urls:
+        slug1 = url.split('https://lists.debian.org/')[-1]
+        fileName = slug1.replace('/', '_') + '.txt'
+        fileContent = getMessageText(url)
+        try:
+            file = open(os.path.join(directory, fileName), 'w')
+            file.write(fileContent)
+            file.close()
+            print('✓', os.path.join(directory, fileName), 'written')
+            written.append(os.path.join(directory, fileName))
+        except Exception as e:
+            print('✖ file:', e)
+    return written
