@@ -17,12 +17,12 @@ pip install -r requirements.py
 
 ## Debian mailist
 
-Check File: `debian-mailisting.yaml` and modify if neccesary.
+Check File: `debian-mailinglist.yaml` and modify if neccesary.
 
 Execution
 
 ```
-python3 debian-mailisting.py
+python3 debian-malinglist.py
 ```
 
 Download files should be at `output directory` (developing)
