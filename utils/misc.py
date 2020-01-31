@@ -38,14 +38,6 @@ def getUrls(htmlContent):
         urls.append(a.attrs['href'])
     return urls
 
-# def yearsToSearch(initialYear=2004, endYear=None):
-#     ''' yields years from initial to current or to endYear if given'''
-#     n = initialYear-1
-#     while n < endYear:
-#         n += 1
-#         yield n
-
-    
 def getUrlsFromSectionIndexDebian(url, name, debug=False, initialYear=2004, endYear=None):
     ''' crawls the given `url' of the mailisting section and returns
     a dict with all urls related to archives of the given `name'
