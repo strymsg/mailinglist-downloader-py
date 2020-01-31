@@ -27,4 +27,12 @@ python3 debian-malinglist.py
 
 Download files should be at `output/` directory. 
 
+### Create csv file
+
+Creates a single csv file with all email messages downloades, useful for data analysis.
+
+```
+python3 utils/debianMailinglistToCsv.py
+```
+
 > LICENSE: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
