@@ -21,7 +21,7 @@ Or using make:
 make install  # install
 ```
 
-## Debian mailisting
+## Debian mailinglist
 
 Check File: `debian-mailinglist.yaml` and modify if neccesary.
 
