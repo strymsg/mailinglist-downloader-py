@@ -24,8 +24,8 @@ prepare-dev:
 
 install:
 	( \
-        $(VENV_ACTIVATE); \
 	test -d $(VENV_NAME) || virtualenv -p python3 $(VENV_NAME); \
+        $(VENV_ACTIVATE); \
 	pip install -r requirements.txt; \
 	)
 
