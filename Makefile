@@ -29,7 +29,7 @@ install:
 	pip install -r requirements.txt; \
 	)
 
-donwload-debian:
+download-debian:
 	( \
 	$(VENV_ACTIVATE); \
 	python debian-mailinglist.py; \

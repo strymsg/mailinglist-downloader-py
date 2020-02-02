@@ -23,7 +23,7 @@ make install  # install
 
 ## Debian mailinglist
 
-Check File: `debian-mailinglist.yaml` and modify if neccesary.
+**Check File**: `debian-mailinglist.yaml` and modify if neccesary.
 
 Execution
 
@@ -36,7 +36,7 @@ Download files should be at `output/` directory.
 or using make:
 
 ```
-make donwload-debian # executes the script reading debian-mailinglist.yaml
+make download-debian # executes the script reading debian-mailinglist.yaml
 ```
 
 ### Create csv file

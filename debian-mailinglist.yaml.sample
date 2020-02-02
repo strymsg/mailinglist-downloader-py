@@ -6,7 +6,6 @@ download_all: False
 # If `download_all' is False then it only downloads emails from the following section
 section_download:
   - debian-cdwrite
-  - debian-admin
   - debian-cli
   - debian-desktop
   - debian-devel
@@ -16,6 +15,11 @@ section_download:
   - debian-mirrors
   - debian-news
   - debian-vote
+  - debian-science
+  - debian-python
+  - debian-r
+  - debian-ruby
+  - debian-woman
 
 # years to get, uncomment if want to get emails comming only from these years
 years:
