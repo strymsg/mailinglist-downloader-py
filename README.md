@@ -1,4 +1,4 @@
-# Mail listing downloader scripts
+# Mailinglist downloader scripts
 
 Collection of scripts to download email messages from a mailing list archive.
 
