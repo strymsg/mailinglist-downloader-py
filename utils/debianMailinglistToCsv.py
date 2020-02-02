@@ -9,14 +9,15 @@ python debianMailing
 
 import os
 import csv
+import traceback
 
 csvHeaders = ['category', 'year','month', 'message']
 # lista = ['debian-cli', 'debian-desktop', 'debian-firewall', 'debian-jobs', 'debian-legal', 'debian-mirrors', 'debian-python', 'debian-r','debian-edu']
 
-outputDirectory = os.path.join(os.path.abspath(os.getcwd()))
+outputDirectory = os.path.join(os.path.abspath(os.getcwd()), 'output', 'debian-mailinglist')
 print('outputDir:', outputDirectory)
-print(outputDirectory)
-outputFile = os.path.join(outputDirectory, 'output', 'debian-mailinglist', 'debian-mailinglist.csv')
+outputFile = os.path.join(outputDirectory, 'debian-mailinglist.csv')
+print('outputFile:', outputFile)
 
 with open(outputFile, 'w') as csvfile:
     writer = csv.DictWriter(csvfile,
@@ -37,14 +38,14 @@ with open(outputFile, 'w') as csvfile:
         #     break
         for name in files:
             filePath = os.path.join(roots, name)
+            print(filePath)
             # getting features
             try:
                 slug1 = filePath.split('/')
-                category = slug1[1]
+                category = slug1[-3]
                 # if category not in lista:
                 #     continue
-                print(filePath)
-                slug2 = slug1[3].split(category + '_')
+                slug2 = slug1[-1].split(category + '_')
                 year = slug2[1].split('_')[0]
                 month = slug2[1].split('_')[1]
                 # print('cateogory:', cateogory, 'year:', year, 'month:', month)
@@ -60,6 +61,7 @@ with open(outputFile, 'w') as csvfile:
                     'message': message
                 })
             except Exception as E:
+                print(traceback.format_exc())
                 print(E)
 print('Done, check output/debian-mailinglist/debian-mailinglist.csv')
 

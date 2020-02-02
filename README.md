@@ -19,10 +19,6 @@ Or using make:
 
 ```
 make install  # install
-make donwload-debian # executes the script reading debian-mailinglist.yaml
-make compress # compress output
-make csv-debian # create a csv file from output
-make nuke # nukes!
 ```
 
 ## Debian mailisting
@@ -37,12 +33,34 @@ python3 debian-malinglist.py
 
 Download files should be at `output/` directory. 
 
+or using make:
+
+```
+make donwload-debian # executes the script reading debian-mailinglist.yaml
+```
+
 ### Create csv file
 
 Creates a single csv file with all email messages downloades, useful for data analysis.
 
 ```
 python3 utils/debianMailinglistToCsv.py
+```
+
+or using make:
+
+```
+make csv-debian # create a csv file from output
+```
+
+### All make commands
+
+```
+make install # to install
+make donwload-debian # donwloads debian mailinglist
+make compress # compress output
+make csv-debian # creates a single csv from output
+make nuke # nukes!
 ```
 
 > LICENSE: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
