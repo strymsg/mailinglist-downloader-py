@@ -15,6 +15,16 @@ Then install dependencies
 pip install -r requirements.py
 ```
 
+Or using make:
+
+```
+make install  # install
+make donwload-debian # executes the script reading debian-mailinglist.yaml
+make compress # compress output
+make csv-debian # create a csv file from output
+make nuke # nukes!
+```
+
 ## Debian mailisting
 
 Check File: `debian-mailinglist.yaml` and modify if neccesary.
