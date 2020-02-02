@@ -13,11 +13,14 @@ help:
 	@echo "     Creates a single csv file of the debian mailinglist donwloaded files, this one is usefull in order to do data analysis from the csv file"
 	@echo "make nuke"
 	@echo "     Deletes all contents of output directory of donwloaded files"
-
+	@echo "make install"
+	@echo "     Install python dependencies"
+	@echo "make prepare-dev"
+	@echo "     Install system dependencies"
 prepare-dev:
 	sudo apt-get -y install python3 python3-pip
 	python3 -m pip install virtualenv
-	make venv
+	make install
 
 install:
 	( \

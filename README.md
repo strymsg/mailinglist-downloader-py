@@ -56,7 +56,8 @@ make csv-debian # create a csv file from output
 ### All make commands
 
 ```
-make install # to install
+make prepared-dev # install system dependencies and python dependencies
+make install # install pyython dependencies
 make donwload-debian # donwloads debian mailinglist
 make compress # compress output
 make csv-debian # creates a single csv from output
