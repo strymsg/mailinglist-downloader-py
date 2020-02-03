@@ -149,7 +149,10 @@ def getUrlsMessagesFromThreadDebian(threadUrl):
     return urls
 
 def getMessageText(url='', html=None):
-    '''crawls the url or the html (if given) and gets the message'''
+    '''crawls the url or the html (if given) and gets the message.
+    Returns a dict of the form:
+    { 'text': 'Text message', type: 'html|plain' }
+    '''
     htmlContent = ''
     if html is not None:
         htmlContent = html
@@ -160,18 +163,25 @@ def getMessageText(url='', html=None):
         p = soup.find_all('pre')
 
         try:
-            return p[0].contents[0]
+            return {
+                'text': p[0].contents[0],
+                'type': 'plain'
+            }
         except Exception as e:
             pass
             # This may be the case of an html formated email.
 
         try:
             b = str(htmlContent).split('<!--X-Body-of-Message-->')
-            return b[1].split('<!--X-Body-of-Message-End-->')[0]
+            return {
+                'text': b[1].split('<!--X-Body-of-Message-End-->')[0],
+                'type': 'html'
+            }
+            return 
         except Exception as e:
             print('✖ [',os.path.abspath(__file__),'] - url:', url)
             print(e)
-            return ''
+            return { 'text': '', 'type': '' }
     else:
         return None
 
@@ -202,11 +212,13 @@ def crawlMessageAndWriteFromUrls(urls, directory, name=None, year=None):
 
     for url in urls:
         slug1 = url.split('https://lists.debian.org/')[-1]
-        fileName = slug1.replace('/', '_') + '.txt'
         fileContent = getMessageText(url)
+        fileName = slug1.replace('/', '_') + '.txt'
+        if fileContent['type'] == 'plain':
+            fileName = fileName.replace('.html.', '.')
         try:
             file = open(os.path.join(pathToWrite, fileName), 'w')
-            file.write(fileContent)
+            file.write(fileContent['text'])
             file.close()
             print('✓', os.path.join(pathToWrite, fileName), 'written')
             written.append(os.path.join(pathToWrite, fileName))
