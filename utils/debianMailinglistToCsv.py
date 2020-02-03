@@ -11,7 +11,7 @@ import os
 import csv
 import traceback
 
-csvHeaders = ['category', 'year','month', 'message']
+csvHeaders = ['category', 'year','month', 'message', 'format']
 # lista = ['debian-cli', 'debian-desktop', 'debian-firewall', 'debian-jobs', 'debian-legal', 'debian-mirrors', 'debian-python', 'debian-r','debian-edu']
 
 outputDirectory = os.path.join(os.path.abspath(os.getcwd()), 'output', 'debian-mailinglist')
@@ -48,6 +48,13 @@ with open(outputFile, 'w') as csvfile:
                 slug2 = slug1[-1].split(category + '_')
                 year = slug2[1].split('_')[0]
                 month = slug2[1].split('_')[1]
+                messageFormat = 'plain'
+                try:
+                    slug1[-1].index('.html.')
+                    messageFormat = 'html'
+                except:
+                    pass
+                
                 # print('cateogory:', cateogory, 'year:', year, 'month:', month)
                 # reading file contents
                 message = ''
@@ -58,7 +65,8 @@ with open(outputFile, 'w') as csvfile:
                     'category': category,
                     'year': year,
                     'month': month,
-                    'message': message
+                    'message': message,
+                    'format': messageFormat
                 })
             except Exception as E:
                 print(traceback.format_exc())
