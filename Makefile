@@ -5,7 +5,7 @@ PYTHON=${VENV_NAME}/bin/python3
 
 .DEFAULT: help
 help:
-	@echo "make donwload-debian"
+	@echo "make download-debian"
 	@echo "     Downloads emails from debian mailinglist reading debian-mailinglist.yaml config file"
 	@echo "make compress"
 	@echo "     Creates a tar.gz file of downloaded files (output directory)"
